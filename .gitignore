@@ -26,17 +26,14 @@
 *.a
 *.lib
 
-# Executables
+# Ignore compiled executables
 *.exe
 *.out
 *.app
-
-# Ignore C++ compiled files and executables
-*.exe
-*.out
-*.app
-*.cpp.out
-*.cpp.exe
+a.out
+*.o
+*.obj
+next-greater-element-i  # Add your executable file name
 
 # Ignore test input/output files
 input.txt
