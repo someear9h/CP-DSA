@@ -31,10 +31,13 @@
 *.out
 *.app
 
-# Ignore compiled C++ executable (matches the .cpp filename)
-*.cpp.exe
+# Ignore C++ compiled files and executables
+*.exe
+*.out
+*.app
 *.cpp.out
+*.cpp.exe
 
-# Ignore input and output test files
+# Ignore test input/output files
 input.txt
 output.txt
