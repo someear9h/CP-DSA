@@ -1,44 +1,30 @@
-# Prerequisites
-*.d
+# Ignore all files by default
+*
 
-# Compiled Object files
-*.slo
-*.lo
+# Allow .cpp and .md files
+!*.cpp
+!*.md
+
+# Allow all folders (but still ignore their contents unless they match the allowed patterns)
+!*/
+
+# Ignore common build files and executables
+*.exe
+*.out
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
+*.a
+*.lib
 *.so
 *.dylib
 *.dll
+*.class
+*.jar
 
-# Fortran module files
-*.mod
-*.smod
+# Ignore macOS system files
+.DS_Store
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Ignore compiled executables
-*.exe
-*.out
-*.app
-a.out
-*.o
-*.obj
-next-greater-element-i
-next-greater-element-ii
-
-# Ignore test input/output files
-input.txt
-output.txt
-
-# Ignore .vscode folder
+# Ignore IDE/editor-specific files
 .vscode/
+.idea/
+*.swp
