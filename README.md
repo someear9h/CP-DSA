@@ -1,4 +1,4 @@
-## **🚀 Competitive Programming & DSA **  
+## 🚀 Competitive Programming & DSA
 
 This repo contains solutions to various CP problems, LeetCode challenges, and DSA implementations that I solve while improving my problem-solving skills.  
 
