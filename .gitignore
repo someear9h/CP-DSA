@@ -1,9 +1,10 @@
 # Ignore all files by default
 *
 
-# Allow .cpp and .md files
+# Allow .cpp, .md, and .java files
 !*.cpp
 !*.md
+!*.java
 
 # Allow all folders (but still ignore their contents unless they match the allowed patterns)
 !*/
