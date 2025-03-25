@@ -23,7 +23,7 @@ public:
         head = nullptr;
     }
 
-    // insert a node in polynomial
+    // insert a node(term) in polynomial
     void insert (int coeff, int exp) {
         Node* newNode = new Node(coeff, exp);
         if(!head) {
