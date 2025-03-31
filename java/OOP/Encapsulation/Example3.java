@@ -1,4 +1,4 @@
-package Encapsulation;
+package OOP.Encapsulation;
 
 class Account {
     private long accNo;

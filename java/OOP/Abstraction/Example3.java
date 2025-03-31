@@ -1,4 +1,4 @@
-package Abstraction;
+package OOP.Abstraction;
 
 // another example to understand abstraction in Java
 abstract class Animal {

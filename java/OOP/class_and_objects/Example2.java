@@ -1,4 +1,4 @@
-package class_and_objects;
+package OOP.class_and_objects;
 
 // Program to initialize Java Object by using method/function
 public class Example2 {

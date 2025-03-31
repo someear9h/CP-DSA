@@ -1,4 +1,4 @@
-package Encapsulation;
+package OOP.Encapsulation;
 
 // Java program demonstrating Encapsulation
 class Programmer {

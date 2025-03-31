@@ -1,4 +1,4 @@
-package Abstraction;
+package OOP.Abstraction;
 
 interface Shape1 {
     double calculateArea(); // abstract method

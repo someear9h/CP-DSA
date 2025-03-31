@@ -1,4 +1,4 @@
-package Abstraction;
+package OOP.Abstraction;
 
 //Java program to illustrate the concept of Abstraction
 abstract class Shape {

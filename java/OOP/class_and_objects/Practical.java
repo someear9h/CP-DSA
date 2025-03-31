@@ -1,4 +1,4 @@
-package class_and_objects;
+package OOP.class_and_objects;
 
 // Class representing a Programmer in a company
 class Programmer {

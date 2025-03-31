@@ -1,4 +1,4 @@
-package class_and_objects;
+package OOP.class_and_objects;
 
 // Java Program to Demonstrate the use of a class with instance variable
 class Dog {

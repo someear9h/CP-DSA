@@ -1,4 +1,5 @@
-package Abstraction;
+package OOP.Abstraction;
+
 // Demonstrating Abstraction in Java
 
 abstract class TV {

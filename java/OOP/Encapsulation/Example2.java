@@ -1,4 +1,4 @@
-package Encapsulation;
+package OOP.Encapsulation;
 
 class Student {
     private String name;
