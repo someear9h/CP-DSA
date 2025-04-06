@@ -1,3 +1,6 @@
+// https://leetcode.com/problems/house-robber-ii/description/
+// Note: we have the same version of it if house robber-i where only solve function would work
+
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -19,6 +22,20 @@ int solve(vector<int> &arr) {
         prev = curr;
     }
     return prev;
+}
+
+int rob(vector<int> &nums) {
+    int n = nums.size();
+    vector<int> temp1, temp2;
+
+    if(n == 1) return nums[0];
+
+    for(int i = 0; i < n; i++) {
+        if(i != 0) temp1.push_back(nums[i]);
+        if(i != n-1) temp2.push_back(nums[i]);
+    }
+
+    return max(solve(temp1), solve(temp2));
 }
 
 int main() {
