@@ -70,7 +70,7 @@ int main() {
 
             
             case 0:
-                cout << "Exiting, Bye!\n";
+                cout << "Exit!\n";
                 break;
 
             default:
