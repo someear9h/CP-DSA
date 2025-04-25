@@ -48,7 +48,7 @@ public:
         Node* temp = head;
         while (temp) {
             cout << "ID: " << temp->id << ", Name: " << temp->name << ", Company: " << temp->company << endl;
-            temp = temp->next;  // Fix here
+            temp = temp->next;
         }
     }
 
@@ -139,7 +139,7 @@ public:
 
     // Function to sort the list based on ID
     void sortList() {
-        if (!head || !head->next) return;
+        if (!head || !head->next) return;  // Already sorted or only one element
         Node* i = head;
         while (i) {
             Node* j = i->next;
