@@ -8,6 +8,7 @@ struct Node {
         data = d;
         next = nullptr;
     }
+    
 };
 
 void mergeAlternate(Node*& first, Node*& second) {

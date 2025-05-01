@@ -26,7 +26,7 @@ void retainDeleteNodes(Node*& head, int M, int N) {
         }
         if (!curr) 
             return;                 // If fewer than M nodes remain, we’re done.
-
+        
         // 6) Now `curr` points to the last node of the block we want to keep.
         prev = curr;                // Remember it in `prev`.
         curr = curr->next;          // Move `curr` to the first node we might delete.
