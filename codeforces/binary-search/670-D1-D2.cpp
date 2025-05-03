@@ -1,3 +1,6 @@
+// https://codeforces.com/contest/670/problem/D1 with smaller constraints
+// https://codeforces.com/contest/670/problem/D2 with large constraints
+
 #include <iostream>
 #include <vector>
 #define ll long long
