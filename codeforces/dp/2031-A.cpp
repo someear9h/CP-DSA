@@ -1,3 +1,5 @@
+// https://codeforces.com/problemset/problem/2031/A
+
 #include <iostream>
 #include <vector>
 #include <unordered_map>
