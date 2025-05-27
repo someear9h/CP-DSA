@@ -11,5 +11,6 @@ public class FinallyExample {
         }finally {
             System.out.println("Finally block always executes");
         }
+        
     }
 }
