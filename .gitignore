@@ -29,3 +29,6 @@
 .vscode/
 .idea/
 *.swp
+
+# IntelliJ IDEA output directory
+out/
