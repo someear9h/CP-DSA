@@ -29,4 +29,3 @@ public class CountSpecialTriplets {
         System.out.println(specialTriplets(nums));
     }
 }
-
