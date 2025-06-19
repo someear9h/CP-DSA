@@ -10,7 +10,7 @@ class Item {
 }
 
 public class FractionalKnapsackProblem {
-    public static double solve(int W, Item[] arr) {
+    private static double solve(int W, Item[] arr) {
        
         // Sort by value/weight ratio in descending order using lambda
         Arrays.sort(arr, (a, b) -> {
