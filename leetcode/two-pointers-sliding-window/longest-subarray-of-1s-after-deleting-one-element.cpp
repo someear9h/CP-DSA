@@ -24,7 +24,7 @@ public:
 
 int main() {
     Solution sol;
-    vector<int> nums = {1, 1, 0, 1, 1, 1, 0, 1};  // Example input
+    vector<int> nums = {1, 1, 0, 1, 1, 1, 0, 1};
     int result = sol.longestSubarray(nums);
     cout << result << endl;
     return 0;
