@@ -12,8 +12,9 @@ public:
             windowSum += nums[r];
 
             while(windowSum >= target) {
-                // shrink and try to find smaller lengths
                 isValid = true;
+                
+                // shrink and try to find smaller lengths
                 minLen = min(minLen, r - l + 1);
                 windowSum -= nums[l];
                 l++;
