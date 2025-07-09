@@ -52,7 +52,7 @@ public class ShortestPath {
         int[] ans = findShortestDistance(edges, n, m, src);
 
         for(int a : ans) {
-            System.out.print(a + " ");
+            System.out.print(a + " "); // expected output: 0 1 2 1 2 3 3 4 4 
         }
         System.out.println();
     }
