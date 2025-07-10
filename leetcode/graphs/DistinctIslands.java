@@ -1,5 +1,4 @@
 import java.util.*;
-
 public class DistinctIslands {
     int[] row = {-1, 1, 0, 0};
     int[] col = {0, 0, -1, 0};
