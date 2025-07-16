@@ -18,10 +18,15 @@ public class FastIOForCP {
                 arr[i] = Integer.parseInt(st.nextToken());
             }
 
+            st = new StringTokenizer(br.readLine());
+            int j = Integer.parseInt(st.nextToken()), k = Integer.parseInt(st.nextToken()); // taking input as spaced integer
+
             // Print everything for verification
             out.println("String: " + s);
             out.println("Integer: " + n);
             out.print("Array: ");
+
+            out.println("two spaced integers: " + j + " " + k);
             for (int i = 0; i < n; i++) {
                 out.print(arr[i] + " ");
             }
