@@ -43,7 +43,7 @@ public class WordLadderI {
                     replacedCharArray[i] = ch;
                     String replacedWord = new String(replacedCharArray);
 
-                    // if the replaced word already is in set then remove it and to the queue
+                    // if the replaced word already is in set then remove it and add to the queue
                     if(st.contains(replacedWord)) {
                         st.remove(replacedWord);
                         q.add(new Pair(replacedWord, steps + 1));

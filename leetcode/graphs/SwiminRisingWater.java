@@ -1,5 +1,6 @@
 import java.util.PriorityQueue;
 
+// intuition: go for paths with less elevation (time) using priority queue and then find the max elevation in that path
 public class SwiminRisingWater {
     public static int swimInWater(int[][] grid) {
         int n = grid.length;
