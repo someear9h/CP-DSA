@@ -2,24 +2,13 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "compile",
+            "label": "compile and run (clean)",
             "type": "shell",
-            "command": "g++",
+            "command": "sh",
             "args": [
-                "-std=c++17",
-                "-o",
-                "${fileBasenameNoExtension}",
-                "${file}"
+                "-c",
+                "javac ${file} && java -cp ${fileDirname} ${fileBasenameNoExtension} < input.txt > output.txt && rm ${fileDirname}/${fileBasenameNoExtension}.class"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            }
-        },
-        {
-            "label": "compile and run",
-            "type": "shell",
-            "command": "g++ -std=c++17 -o ${fileBasenameNoExtension} ${file} && ./${fileBasenameNoExtension} < input.txt > output.txt",
             "group": {
                 "kind": "build",
                 "isDefault": true
