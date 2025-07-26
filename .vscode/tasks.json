@@ -16,3 +16,34 @@
         }
     ]
 }
+
+
+// for c++
+// {
+//   // This is the configuration file for VS Code tasks.
+//   // Place this file in a .vscode folder in your project's root directory.
+//   "version": "2.0.0",
+//   "tasks": [
+//     {
+//       "label": "C++: compile, run, and clean",
+//       "type": "shell",
+//       "command": "sh",
+//       "args": [
+//         "-c",
+//         // 1. Compile the C++ file using g++ with modern standards (-std=c++17) and all warnings (-Wall).
+//         // 2. If compilation succeeds (&&), run the created executable.
+//         // 3. Redirect standard input from input.txt (<) and standard output to output.txt (>).
+//         // 4. After execution, clean up by removing the compiled executable file.
+//         "g++ -std=c++17 -Wall '${file}' -o '${fileDirname}/${fileBasenameNoExtension}' && '${fileDirname}/${fileBasenameNoExtension}' < input.txt > output.txt && rm '${fileDirname}/${fileBasenameNoExtension}'"
+//       ],
+//       "group": {
+//         "kind": "build",
+//         "isDefault": true // Makes this the default build task (run with Ctrl+Shift+B or Cmd+Shift+B).
+//       },
+//       "problemMatcher": [
+//         "$gcc" // This allows VS Code to parse g++ errors and warnings and show them in the editor.
+//       ],
+//       "detail": "Compiles and runs the current C++ file, using input.txt and output.txt."
+//     }
+//   ]
+// }
