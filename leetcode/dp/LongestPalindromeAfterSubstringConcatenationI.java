@@ -1,4 +1,4 @@
-class Solution {
+public class LongestPalindromeAfterSubstringConcatenationI {
     public int longestPalindrome(String s, String t) {
         String revT = new StringBuilder(t).reverse().toString();
         int n = s.length(), m = revT.length();

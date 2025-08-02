@@ -5,6 +5,7 @@ public class FastIOForCP {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+        // PrintWriter out = new PrintWriter(System.out); you can also have this
 
         int t = Integer.parseInt(br.readLine()); // number of test cases
 

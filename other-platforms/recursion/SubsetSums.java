@@ -2,7 +2,6 @@ import java.util.*;
 
 public class SubsetSums {
     public static ArrayList<Integer> subsetSums(int[] arr) {
-        // code here
         ArrayList<Integer> res = new ArrayList<>();
         
         helper(0, arr, 0, res);
