@@ -12,7 +12,5 @@ public class Sorting2DArrayByLastElement {
 
         System.out.println("Sorting by 2nd element: ");
         System.out.println(Arrays.deepToString(array));
-
-        System.out.println(1 % 3);
     }
 }
