@@ -8,8 +8,7 @@ public class CheckIfNumberIsPowerOfTwo {
         }
 
         // --- The "Check for Power of 2" Algorithm ---
-        // This is the core logic from your image.
-        // It leverages the fact that (N & (N-1)) removes the rightmost set bit.
+        // the fact that (N & (N-1)) removes the rightmost set bit.
         //
         // Example 1 (N = 16):
         //    10000  (N = 16)
