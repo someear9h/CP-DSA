@@ -44,3 +44,41 @@ public class ConvertMinHeaptoMaxHeap {
 
     }
 }
+
+/**
+ * 
+ * Problem Restatement
+
+We’re given an array nums that already represents a min-heap.
+We want to convert it into a max-heap (array representation) and return the result.
+
+🔹 Intuition
+
+In a min-heap, each parent ≤ children.
+
+In a max-heap, each parent ≥ children.
+
+We can’t just "reverse" the array — the heap property must be preserved.
+So the correct approach is:
+👉 Re-heapify the array into a max-heap.
+
+🔹 Approach
+
+Heapify Concept:
+
+A heapify(i) function ensures the subtree rooted at index i satisfies the max-heap property:
+
+Compare node i with its left & right children.
+
+Swap with the largest child if needed.
+
+Recursively fix the subtree.
+
+Building a max-heap:
+
+Start from the last non-leaf node (n/2 - 1) down to root (0).
+
+Call heapify(i) on each node.
+
+This ensures all subtrees satisfy max-heap property → the entire array is a valid max-heap.
+ */
