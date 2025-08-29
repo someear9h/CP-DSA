@@ -17,7 +17,7 @@ class Twitter {
     }
 
     public List<Integer> getNewsFeed(int userId) {
-        PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> b[0] - a[0]);
 
         if(tweets.containsKey(userId)) {
             maxHeap.addAll(tweets.get(userId));
