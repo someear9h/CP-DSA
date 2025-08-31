@@ -7,8 +7,9 @@
             "type": "shell",
             "command": "sh",
             "args": [
-                "-c",
-                "javac ${file} && java -cp ${fileDirname} ${fileBasenameNoExtension} < input.txt > output.txt && rm ${fileDirname}/${fileBasenameNoExtension}.class"
+               "-c",
+                "mkdir -p ${fileDirname}/bin && javac -d ${fileDirname}/bin ${file} && java -cp ${fileDirname}/bin ${fileBasenameNoExtension} < input.txt > output.txt && rm -rf ${fileDirname}/bin"
+
             ],
             "group": {
                 "kind": "build",
