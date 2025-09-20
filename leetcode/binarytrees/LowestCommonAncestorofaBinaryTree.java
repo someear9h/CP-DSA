@@ -67,15 +67,15 @@ public class LowestCommonAncestorofaBinaryTree {
         //     4   5   6
 
         TreeNode root = new TreeNode(1);
-    root.left = new TreeNode(2, new TreeNode(4), new TreeNode(5));
-    root.right = new TreeNode(3, null, new TreeNode(6));
+        root.left = new TreeNode(2, new TreeNode(4), new TreeNode(5));
+        root.right = new TreeNode(3, null, new TreeNode(6));
 
-    // Choose nodes p and q (must be references to the actual nodes in the tree)
-    TreeNode p = root.left;          // Node with value 2
-    TreeNode q = root.right.right;   // Node with value 6
+        // Choose nodes p and q (must be references to the actual nodes in the tree)
+        TreeNode p = root.left;          // Node with value 2
+        TreeNode q = root.right.right;   // Node with value 6
 
-    TreeNode lca = lowestCommonAncestor(root, p, q);
+        TreeNode lca = lowestCommonAncestor(root, p, q);
 
-    System.out.println("LCA of " + p.val + " and " + q.val + " = " + lca.val);
+        System.out.println("LCA of " + p.val + " and " + q.val + " = " + lca.val);
     }
 }
