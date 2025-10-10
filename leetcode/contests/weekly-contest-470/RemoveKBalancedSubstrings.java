@@ -1,5 +1,4 @@
 public class RemoveKBalancedSubstrings {
-
     // tc: O(n * k), sc: O(n)
     public String removeSubstring(String s, int k) {
         StringBuilder ans = new StringBuilder(s);
