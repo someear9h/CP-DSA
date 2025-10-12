@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 /*
- *  Time Complexity: O(n+26) → Counting + iteration over fixed 26 characters.
+    Time Complexity: O(n+26) → Counting + iteration over fixed 26 characters.
     Space Complexity: O(26) → Frequency and map storage.
  */
 
