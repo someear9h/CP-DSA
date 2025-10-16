@@ -1,65 +1,87 @@
-import java.util.*;
-
-class Solution {
-    public static ArrayList<Integer> topoSort(int V, int[][] edges) {
-        int n = V;
-        List<List<Integer>> adj = new ArrayList<>();
-
-        for(int i = 0; i < n; i++) {
-            adj.add(new ArrayList<>());
+class DisjointSetUnion {
+    int[] parent;
+    int[] rank;
+    int[] size;
+    
+    DisjointSetUnion(int n) {
+        parent = new int[n + 1];
+        rank = new int[n + 1];
+        size = new int[n + 1];
+        
+        for(int i = 1; i <= n; i++) {
+            parent[i] = i;
+            rank[i] = 0;
+            size[i] = 1;
         }
-
-        for(int[] e : edges) {
-            int u = e[0], v = e[1];
-            adj.get(u).add(v);
-        }
-
-        int[] indegree = new int[n];
-        int[] topo = new int[n];
-        Queue<Integer> q = new LinkedList<>();
-
-        for(int i = 0; i < n; i++) {
-            for(int it : adj.get(i)) {
-                indegree[it]++;
-            }
-        }
-
-        for(int i = 0; i < n; i++) {
-            if(indegree[i] == 0) {
-                q.add(i);
-            }
-        }
-
-        int i = 0;
-        while(!q.isEmpty()) {
-            int node = q.remove();
-            topo[i++] = node;
-
-            for(int adjNode : adj.get(node)) {
-                indegree[adjNode]--;
-                if(indegree[adjNode] == 0) {
-                    q.add(adjNode);
-                }
-            }
-        }
-
-        ArrayList<Integer> ans = new ArrayList<>();
-        for(int t : topo) {
-            ans.add(t);
-        }
-
-        return ans;
+    }
+    
+    // function to get the ultimate Parent of a node
+    public int findUPar(int node) {
+        if(node == parent[node]) return node;
+        
+        int ulp = findUPar(parent[node]);
+        parent[node] = ulp;
+        return parent[node];
     }
 
+    // function to unionise nodes using rank
+    public void unionByRank(int u, int v) {
+        int up = findUPar(u);
+        int vp = findUPar(v);
+
+        if(up == vp) return; // same parent, already unionised
+
+        if(rank[up] < rank[vp]) {
+            parent[up] = vp;
+        } else if(rank[vp] < rank[up]) {
+            parent[vp] = up;
+        } else {
+            // if they same same rank then, any node can be a parent of any node
+            parent[up] = vp;
+            rank[vp] ++;
+        }
+    }
+
+    public void unionBySize(int u, int v) {
+        int up = findUPar(u);
+        int vp = findUPar(v);
+
+        if(up == vp) return;
+
+        if(size[up] < size[vp]) {
+            parent[up] = vp;
+            size[vp] = size[vp] + size[up];
+        } else {
+            parent[vp] = up;
+            size[up] = size[up] + size[vp];
+        }
+    }
+}
+
+public class Solution {
     public static void main(String[] args) {
-        int V = 4;
-        int[][] edges = {{3, 0}, {1, 0}, {2, 0}};
+        DisjointSetUnion ds = new DisjointSetUnion(7);
 
-        Solution sol = new Solution();
+        ds.unionByRank(1, 2);
+        ds.unionByRank(2, 3);
+        ds.unionByRank(4, 5);
+        ds.unionByRank(6, 7);
+        ds.unionByRank(5, 6);
 
-        ArrayList<Integer> printList = topoSort(V, edges);
-        for(int i : printList) {
-            System.out.print(i + " ");
+        if(ds.findUPar(3) == ds.findUPar(7)) {
+            System.out.println("Same");
+        } else {
+            System.out.println("Not same");
+        }
+
+
+        ds.unionBySize(3, 7);
+        System.out.println("After Union By Rank");
+
+        if(ds.findUPar(3) == ds.findUPar(7)) {
+            System.out.println("Same");
+        } else {
+            System.out.println("Not same");
         }
     }
 }
