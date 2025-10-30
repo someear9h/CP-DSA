@@ -1,30 +1,29 @@
+// import java.util.*;
 import java.io.*;
-import java.util.*;
 
 public class Solution {
-    static void solve(int[] arr, int n) {
-        Arrays.sort(arr);
+    static int[] swapTwoNumbers(int a, int b) {
+        a = a ^ b;
+        b = a ^ b;
+        a = a ^ b;
+
+        return new int[] {a, b};
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter out = new PrintWriter(System.out);
+        try(PrintWriter out = new PrintWriter(System.out)) {
+            int a = Integer.parseInt(br.readLine());
+            int b = Integer.parseInt(br.readLine());
 
-        int n = Integer.parseInt(br.readLine());
+            out.println("a: " + a);
+            out.println("b: " + b);
+            
+            int[] arr = swapTwoNumbers(a, b);
+            out.println();
 
-        int[] arr = new int[n];
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        for(int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            out.println("a: " + arr[0]);
+            out.println("b: " + arr[1]);
         }
-
-        solve(arr, n);
-
-        for(int a : arr) {
-            out.print(a + " ");
-        }
-
-        out.close();
     }
 }
