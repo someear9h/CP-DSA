@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Solution {
+public class BellmanFord {
     public static int[] bellmanFord(int V, List<List<Integer>> edges, int S) {
         int[] dist = new int[V];
         Arrays.fill(dist, (int)1e8);

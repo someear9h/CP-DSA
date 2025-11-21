@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+
 public class CountSubarraysWithMajorityElementI {
     public static int countMajoritySubarrays(int[] nums, int target) {
         int n = nums.length;
