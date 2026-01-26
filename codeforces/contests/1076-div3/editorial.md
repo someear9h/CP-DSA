@@ -278,3 +278,243 @@ public class Main {
 
 3. **The Trigger:** As soon as `pos[val] != expectedIdx`, we have found our opportunity. The largest remaining number is somewhere deeper in the array. We reverse the segment from `expectedIdx` to `pos[val]` to bring that big number to the front.
 4. **Break:** Since we can only perform **one** operation, we break the loop immediately after reversing.
+
+
+##  C
+
+Here is the complete breakdown of the intuition, the optimized approach, and the working Java code with Fast I/O.
+
+### 1. Intuition: The "Waterfall" Logic
+
+To understand this problem, imagine the array as a waterfall flowing from **Right to Left**.
+
+* **The Source:** At any index , you can choose to keep the original value  or swap it with the backup . Naturally, to maximize the sum, the "raw potential" of index  is simply the larger of the two: .
+* **The Flow (Operation 1):** The rule "replace  with " means values can move from the **Right** (index ) to the **Left** (index ).
+* If index 5 has a huge number (e.g., 100), index 4 can copy it. Then index 3 can copy it from index 4. Then index 2 from index 3...
+* This means any index  can effectively "reach downstream" to its right and grab the largest value it sees.
+
+
+
+**Conclusion:** The best possible value for any specific position  is the **maximum value found in the suffix** starting from .
+
+
+### 2. The Optimized Approach ()
+
+If we recalculate the maximum for every query, it will be too slow (). We need to pre-calculate everything in  so each query takes .
+
+1. **Step 1: Calculate "Potential" Array**
+Create an array where every element is just the best local choice: `base[i] = Math.max(a[i], b[i])`.
+2. **Step 2: Create Suffix Maximum Array**
+Iterate from the **end** of the array () down to the start ().
+* The last element stays the same.
+* For every other element: `suffixMax[i] = Math.max(base[i], suffixMax[i+1])`.
+* *This array now represents the final optimal state of the array .*
+
+
+3. **Step 3: Prefix Sums for Speed**
+The queries ask for the sum of a range . To answer this instantly, build a Prefix Sum array on top of the `suffixMax` array.
+* `Answer(l, r) = prefixSum[r] - prefixSum[l-1]`
+
+
+
+---
+
+### Dry Run with the Code
+
+### **Input Data**
+
+* **`n`**: 4, **`q`**: 3
+* **`a`**: `[4, 3, 2, 1]`
+* **`b`**: `[5, 1, 3, 1]`
+* **Queries**:
+1. `1 2`
+2. `2 4`
+3. `3 4`
+
+
+
+---
+
+### **Step 1: Calculate Suffix Maximums (`opt` Array)**
+
+We iterate from **Right to Left** (Index 3 down to 0).
+
+* **Logic:** `opt[i] = max( max(a[i], b[i]), opt[i+1] )`
+
+**Iteration `i = 3` (Last Element Base Case):**
+
+* Local potential: `max(a[3], b[3])`  `max(1, 1)` = **1**
+* No neighbor to the right, so `opt[3] = 1`.
+* **`opt` State:** `[?, ?, ?, 1]`
+
+**Iteration `i = 2`:**
+
+* Local potential: `max(a[2], b[2])`  `max(2, 3)` = **3**
+* Compare with neighbor `opt[3]` (which is 1).
+* `opt[2] = max(3, 1)` = **3**.
+* **`opt` State:** `[?, ?, 3, 1]`
+
+**Iteration `i = 1`:**
+
+* Local potential: `max(a[1], b[1])`  `max(3, 1)` = **3**
+* Compare with neighbor `opt[2]` (which is 3).
+* `opt[1] = max(3, 3)` = **3**.
+* **`opt` State:** `[?, 3, 3, 1]`
+
+**Iteration `i = 0`:**
+
+* Local potential: `max(a[0], b[0])`  `max(4, 5)` = **5**
+* Compare with neighbor `opt[1]` (which is 3).
+* `opt[0] = max(5, 3)` = **5**.
+* **`opt` State:** `[5, 3, 3, 1]`
+
+**Summary:** The `opt` array now represents the "Best possible value" at every index if we pull the max value from the right.
+
+---
+
+### **Step 2: Calculate Prefix Sums (`pre` Array)**
+
+We iterate from **Left to Right** to allow  range sum queries.
+
+* `pre` size is `n + 1` (Size 5). `pre[0]` is always 0.
+* `i = 0`: `pre[1] = pre[0] + opt[0]`   = **5**
+* `i = 1`: `pre[2] = pre[1] + opt[1]`   = **8**
+* `i = 2`: `pre[3] = pre[2] + opt[2]`   = **11**
+* `i = 3`: `pre[4] = pre[3] + opt[3]`   = **12**
+
+**Final `pre` Array:** `[0, 5, 8, 11, 12]`
+
+---
+
+### **Step 3: Process Queries**
+
+The formula for range sum  is: **`pre[r+1] - pre[l]`**
+*(Note: Queries are 1-based, so we decrement `l` and `r` first to make them 0-based)*
+
+**Query 1: `1 2**`
+
+* **0-based indices:** `l = 0`, `r = 1`
+* **Math:** `pre[1+1] - pre[0]`  `pre[2] - pre[0]`
+* **Values:**  = **8**
+* **Output:** `8`
+
+**Query 2: `2 4**`
+
+* **0-based indices:** `l = 1`, `r = 3`
+* **Math:** `pre[3+1] - pre[1]`  `pre[4] - pre[1]`
+* **Values:**  = **7**
+* **Output:** `7`
+
+**Query 3: `3 4**`
+
+* **0-based indices:** `l = 2`, `r = 3`
+* **Math:** `pre[3+1] - pre[2]`  `pre[4] - pre[2]`
+* **Values:**  = **4**
+* **Output:** `4`
+
+---
+
+### **Final Output Block**
+
+```text
+8 7 4 
+
+```
+
+Matches the example output exactly!
+
+
+---
+
+## D 
+### 1. Problem Explanation: "Monster Game"
+
+This is a strategy optimization problem. Here is the breakdown:
+
+* **The Setup:** You have  swords with different strengths () and  levels of monsters. Each monster requires a specific number of strikes () to be defeated.
+* **The Rules:**
+1. **Difficulty ():** You pick a number . Any sword with strength **less than ** breaks immediately and cannot be used. Swords with strength  can be used exactly once (1 strike).
+2. **Progression:** You must beat level 1, then level 2, etc. You cannot skip levels.
+3. **Cost:** To beat level , you consume  valid swords.
+
+
+* **The Score:** Your score is calculated as:
+
+
+* **The Goal:** Choose the optimal difficulty  to maximize this score.
+
+**Key Insight:**
+There is a trade-off.
+
+* If you pick a **high difficulty**, the multiplier () is large, but you have very few usable swords, so you complete fewer levels.
+* If you pick a **low difficulty**, you have many swords and complete more levels, but the multiplier () is small.
+
+---
+
+### 2. Test Case Explanation (Example 1)
+
+**Input:**
+
+* 
+* Swords (): `[1, 3, 4]`
+* Level Costs (): `[2, 1, 1]`
+
+**Scenario 1: Choose Difficulty **
+
+* **Usable Swords:** Only `[4]` (Count: 1 sword).
+* **Game:** Level 1 needs 2 strikes. We only have 1 sword. We fail Level 1.
+* **Levels Completed:** 0.
+* **Score:** .
+
+**Scenario 2: Choose Difficulty ** (Optimal)
+
+* **Usable Swords:** `[3, 4]` (Count: 2 swords).
+* **Game:** Level 1 needs 2 strikes. We have 2. Beat Level 1! (Swords left: 0).
+* **Next:** Level 2 needs 1 strike. We have 0. Stop.
+* **Levels Completed:** 1.
+* **Score:** .
+
+**Scenario 3: Choose Difficulty **
+
+* **Usable Swords:** `[1, 3, 4]` (Count: 3 swords).
+* **Game:**
+* Level 1 needs 2 (Cumulative: 2). Have 3. OK.
+* Level 2 needs 1 (Cumulative: 3). Have 3. OK.
+* Level 3 needs 1 (Cumulative: 4). Have 3. Fail.
+
+
+* **Levels Completed:** 2.
+* **Score:** .
+
+**Maximum Score:** 3.
+
+---
+
+### 3. Solution Logic (Two Pointers / Greedy)
+
+The brute force approach (trying every possible number as difficulty) is too slow. We use a smarter approach based on sorting:
+
+1. **Sort Swords:** Sort the sword strengths in **descending order**.
+* Let's say sorted  is .
+
+
+2. **Iterate Through Sword Counts:**
+* If we want to use the **top 1** strongest sword, the difficulty must be at most .
+* If we want to use the **top 2** strongest swords, the difficulty must be at most .
+* If we want to use the **top ** strongest swords, the difficulty is simply the -th value in our sorted array.
+
+
+3. **Track Levels (`h`):**
+* Instead of recalculating how many levels we can beat every time, we use a **pointer** `h`.
+* As we lower the difficulty (move right in the sorted array), we gain more swords. This means we can potentially beat more levels.
+* We keep adding levels to our "completed" pile as long as the total strikes required () is less than or equal to our current sword count ().
+
+
+
+**Complexity:**
+
+* Sorting takes .
+* The loop runs  times, and the inner `while` loop moves the pointer `h` forward at most  times in total.
+* Total Time Complexity: ****.
+
+---
