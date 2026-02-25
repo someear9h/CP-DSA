@@ -1,46 +1,46 @@
 // for java
-// {
-//     "version": "2.0.0",
-//     "tasks": [
-//         {
-//             "label": "compile and run (clean)",
-//             "type": "shell",
-//             "command": "sh",
-//             "args": [
-//                "-c",
-//                 "mkdir -p ${fileDirname}/bin && javac -d ${fileDirname}/bin ${file} && java -cp ${fileDirname}/bin ${fileBasenameNoExtension} < input.txt > output.txt && rm -rf ${fileDirname}/bin"
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "compile and run (clean)",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+               "-c",
+                "mkdir -p ${fileDirname}/bin && javac -d ${fileDirname}/bin ${file} && java -cp ${fileDirname}/bin ${fileBasenameNoExtension} < input.txt > output.txt && rm -rf ${fileDirname}/bin"
 
-//             ],
-//             "group": {
-//                 "kind": "build",
-//                 "isDefault": true
-//             }
-//         }
-//     ]
-// }
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
 
 
 // for c++
-{
+// {
 
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "C++: compile, run, and clean",
-      "type": "shell",
-      "command": "sh",
-      "args": [
-        "-c",
-        "g++-15 -std=gnu++23 -Wall '${file}' -o '${fileDirname}/${fileBasenameNoExtension}' && '${fileDirname}/${fileBasenameNoExtension}' < input.txt > output.txt && rm '${fileDirname}/${fileBasenameNoExtension}'"
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true 
-      },
-      "problemMatcher": [
-        "$gcc" 
-      ],
-      "detail": "Compiles and runs the current C++ file, using input.txt and output.txt."
-    }
-  ]
-}
+//   "version": "2.0.0",
+//   "tasks": [
+//     {
+//       "label": "C++: compile, run, and clean",
+//       "type": "shell",
+//       "command": "sh",
+//       "args": [
+//         "-c",
+//         "g++-15 -std=gnu++23 -Wall '${file}' -o '${fileDirname}/${fileBasenameNoExtension}' && '${fileDirname}/${fileBasenameNoExtension}' < input.txt > output.txt && rm '${fileDirname}/${fileBasenameNoExtension}'"
+//       ],
+//       "group": {
+//         "kind": "build",
+//         "isDefault": true 
+//       },
+//       "problemMatcher": [
+//         "$gcc" 
+//       ],
+//       "detail": "Compiles and runs the current C++ file, using input.txt and output.txt."
+//     }
+//   ]
+// }
