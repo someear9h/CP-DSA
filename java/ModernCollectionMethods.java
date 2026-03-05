@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Solution {
+public class ModernCollectionMethods {
     public static void main(String[] args) {
         List<String> fruits = List.of("Apple", "Banana", "Cherry");
         // fruits.add("Kiwi"); // will give an error
