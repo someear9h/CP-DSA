@@ -1,48 +1,55 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-using ll = long long;
-#define all(x) (x).begin(), (x).end()
-#define pb push_back
+class Solution {
+public:
+    vector<int> PSE(vector<int>& arr) {
+        int n = arr.size();
+        stack<int> st;
 
-void solve() {
-    int n, k;
-    cin >> n >> k;
-    int evens = 0, minOps = INT_MAX;
-    for(int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
+        // prev smaller element
+        vector<int> pse(n);
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && arr[st.top()] > arr[i]) {
+                st.pop();
+            }
 
-        if((x&1) == 0) evens++;
-
-        int rem = x % k;
-        int ops = rem == 0 ? 0 : (k-rem);
-        minOps = min(minOps, ops);
-    }
-
-    if(k == 4) {
-        int ops = INT_MAX;
-        if(evens == 0) {
-            ops = 2;
-        } else if(evens == 1) {
-            ops = 1;
-        } else if(evens >= 2) {
-            ops = 0;
+            pse[i] = st.empty() ? -1 : st.top();
+            st.push(i);
         }
-
-        minOps = min(minOps, ops);
+        return pse;
     }
 
-    cout << minOps << "\n";
-}
+    vector<int> NSE(vector<int>& arr) {
+        int n = arr.size();
+        stack<int> st;
+        
+        // next smaller element
+        vector<int> nse(n);
+        for(int i = n-1; i>=0; i--) {
+            while(!st.empty() && arr[st.top()] >= arr[i]) {
+                st.pop();
+            }
+
+            nse[i] = st.empty() ? n : st.top();
+            st.push(i);
+        }
+    }
+
+    int sumSubarrayMins(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> nse = NSE(arr);
+        vector<int> pse = PSE(arr);
+
+        
+    }
+};
 
 int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(NULL);
-    
-    int t;
-    cin >> t;
+    vector<int> arr = {3,1,2,4};
+    Solution sol;
 
-    while(t-->0) solve();
+    sol.sumSubarrayMins(arr);
+
     return 0;
 }
