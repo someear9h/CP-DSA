@@ -316,14 +316,27 @@ If you pass the *value* directly to `.erase()`, C++ will search the tree and des
 `ms.find(0)` gets an *iterator* (a direct memory pointer) to just **one** of the zeroes. When you pass that pointer to `.erase()`, C++ deletes exactly that one specific block and leaves the rest alone.
 * Result: `[-1, 0, 0, 3]`. One zero is gone, the others survive.
 
-### Why We Used It In Your Problem
-In the prefix sum problem, our sliding window was tracking all the valid prefix sums we could subtract. 
-If our window had the prefix sums `0`, `-1`, `0`, and `3`, we *needed* both zeroes. If we shrank the window and lost the first `0`, we still needed the second `0` to exist as a valid starting point! 
-
-If we used a standard `set`, it would have merged them. If we used `ms.erase(0)`, it would have deleted both. By using `multiset` and `ms.erase(ms.find(P[l]))`, we safely removed exactly one prefix sum as it fell out the back of the window, while perfectly maintaining our access to the minimum value via `*ms.begin()`.
-
-***
-
-You just added a Red-Black Tree to your arsenal. It is the ultimate bridge between Arrays and Heaps. 
-
-Does the difference between the "Nuke" and the "Sniper" erase make perfect sense, or would you like to see how we iterate through a multiset to find the 2nd or 3rd smallest numbers?
+## Exponents and powers (x power y) in C++
+```cpp
+/**
+ * PATTERN: Binary Exponentiation
+ * * INTUITION:
+ * - Calculates (x^y) in O(log y) time.
+ * - Decomposes the exponent into its binary representation.
+ * - Repeatedly squares the base and multiplies it to the result when the current exponent bit is 1.
+ */
+long long binpow(long long x, long long y) {
+    long long res = 1;
+    while (y > 0) {
+        // If the lowest bit is 1, multiply the current base into the result
+        if (y & 1) {
+            res = res * x;
+        }
+        // Square the base for the next bit
+        x = x * x;
+        // Shift the exponent right by 1 bit (divide by 2)
+        y >>= 1;
+    }
+    return res;
+}
+```
