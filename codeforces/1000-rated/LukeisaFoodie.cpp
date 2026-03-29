@@ -30,6 +30,8 @@ void solve() {
     for(int i = 0; i <n; i++) {
         int num;
         cin >> num;
+
+        // |v - val| <= x -> -x <= v - val <= +x -> v = [val-x, val+x]
         intervals[i].first = num - x;
         intervals[i].second = num + x;
     }

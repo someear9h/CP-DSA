@@ -28,20 +28,18 @@ using ll = long long;
 void solve() {
     int n;
     cin >> n;
-    vector<ll> a(n);
 
-    for(int i = 0; i < n; i++) {
-        cin >> a[i];
-    }
-    
-    vector<ll> students(n);
-    for(int i = 0; i < n; i++) {
-        students[i] = i+1;
+    vector<int> s(n);
+    for(auto& i : s) {
+        cin >> i;
     }
 
-    int l = 0, r= 0;
-    while(l < n) {
-        while(r < n && a[r] == a[l]) {
+    vector<int> stu(n);
+    for(int i = 0; i < n; i++) stu[i] = i+1;
+
+    int l = 0, r = 0;
+    while(r < n) {
+        while(r < n && s[l] == s[r]) {
             r++;
         }
 
@@ -50,11 +48,11 @@ void solve() {
             return;
         }
 
-        rotate(students.begin()+l, students.begin() +l+1, students.begin()+r);
-        l=r;
+        rotate(stu.begin() + l, stu.begin() + l + 1, stu.begin() + r);
+        l = r;
     }
 
-    for(auto& i : students) {
+    for(auto& i : stu) {
         cout << i << " ";
     }
 
