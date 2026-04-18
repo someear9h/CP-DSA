@@ -2,7 +2,7 @@
 
 Every problem in this pattern follows this exact flow:
 
-found it on: https://leetcode.com/problems/minimum-operations-to-make-array-elements-equal-to-target (variant of LC peak problems)
+found it on: https://leetcode.com/problems/minimum-increase-to-maximize-special-indices/ (variant of LC peak problems)
 
 ```
 STEP 1: Identify the "peak" structure
