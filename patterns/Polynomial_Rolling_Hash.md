@@ -361,50 +361,145 @@ SIGNAL IN PROBLEM                              → PATTERN
 ## The Core Code Template (Java)
 
 ```java
-// TEMPLATE: Polynomial Rolling Hash with Prefix Array
-// Time: O(N) precompute + O(1) per query    Space: O(N)
+import java.util.HashSet;
+import java.util.Set;
 
-class RollingHash {
-    private static final long MOD  = 1_000_000_007L;
-    private static final long BASE = 31L;   // use 10L for digit-value problems
+public class DistinctEchoSubstrings {
+    private static final long mod = (long)1e9 + 7;
+    private static final long base = 31;
 
-    long[] prefix, pow;
+    public static int distinctEchoSubstrings(String text) {
+        int n = text.length();
+        long[] h = new long[n+1];
+        long[] p = new long[n+1];
+        p[0] = 1; // powers
 
-    RollingHash(int[] vals, int n) {        // vals[i] = numeric value of s[i]
-        prefix = new long[n + 1];           // prefix[0] = 0 (empty string)
-        pow    = new long[n + 1];
-        pow[0] = 1;
+        Set<String> seen = new HashSet<>();
 
-        for (int i = 0; i < n; i++) {
-            prefix[i + 1] = (prefix[i] * BASE + vals[i]) % MOD;
-            pow[i + 1]    = pow[i] * BASE % MOD;
+        for(int i = 0; i < n; i++) {
+            p[i+1] = (p[i] * base) % mod;
+            h[i+1] = (h[i] * base + (text.charAt(i) - 'a' + 1)) % mod;
+        }
+
+        for(int len = 1; len <= n / 2; len++) {
+            for(int i = 0; i <= n - len * 2; i++) {
+                long hashLeft = getHash(i, i+len, h, p);
+                long hashRight = getHash(i+len, i + 2*len, h, p);
+
+                if(hashLeft == hashRight) {
+                    seen.add(text.substring(i, i + 2* len));
+                }
+            }
+        }
+
+        return seen.size();
+    }
+
+    // calculate hash of substring from index l to r
+    private static long getHash(int l, int r, long[] h, long[] p) {
+        long val = (h[r] - h[l] * p[r - l]) % mod;
+        if(val < 0) val += mod;
+        return val;
+    }
+
+    public static void main(String[] args) {
+        String text = "abcabcabc";
+        System.out.println(distinctEchoSubstrings(text));
+    }
+}
+```
+
+```java
+public class FindtheIndexoftheFirstOccurrenceinaString {
+    // ---------- This problem can also be done using Single Rolling hash ------------
+    // ---------- Double Hashing Helper Class ----------
+    static class StringHash {
+        private static final long MOD1 = 1_000_000_007L; // Use 53 or 101 if string has uppercase/special chars
+        private static final long MOD2 = 1_000_000_009L;
+        private static final long BASE1 = 31;
+        private static final long BASE2 = 37;
+
+        private long[] h1, p1;
+        private long[] h2, p2;
+
+        public StringHash(String s) {
+            int n = s.length();
+            h1 = new long[n + 1];
+            p1 = new long[n + 1];
+            h2 = new long[n + 1];
+            p2 = new long[n + 1];
+
+            p1[0] = 1;
+            p2[0] = 1;
+
+            for (int i = 0; i < n; i++) {
+                long val = s.charAt(i) - 'a' + 1;
+
+                h1[i + 1] = (h1[i] * BASE1 + val) % MOD1;
+                p1[i + 1] = (p1[i] * BASE1) % MOD1;
+
+                h2[i + 1] = (h2[i] * BASE2 + val) % MOD2;
+                p2[i + 1] = (p2[i] * BASE2) % MOD2;
+            }
+        }
+
+        // Hash of substring s[l..r-1] (left inclusive, right exclusive)
+        public long getHash(int l, int r) {
+            long v1 = (h1[r] - h1[l] * p1[r - l]) % MOD1;
+            if (v1 < 0) v1 += MOD1;
+
+            long v2 = (h2[r] - h2[l] * p2[r - l]) % MOD2;
+            if (v2 < 0) v2 += MOD2;
+
+            return (v1 << 32) | v2;
         }
     }
 
-    // hash of s[l..r], 0-indexed, inclusive
-    long hash(int l, int r) {
-        int len = r - l + 1;
-        //         [value up to r]   [left garbage shifted into position]    [guard]
-        return (prefix[r + 1] - prefix[l] * pow[len] % MOD + MOD) % MOD;
+    // ---------- Main Problem Logic ----------
+    public int strStr(String haystack, String needle) {
+        int n = haystack.length();
+        int m = needle.length();
+
+        if (m > n) return -1;
+
+        // Build hasher for haystack
+        StringHash sh = new StringHash(haystack);
+
+        // Compute hash for needle
+        long needleHash = computeNeedleHash(needle);
+
+        // Sliding window check
+        for (int i = 0; i <= n - m; i++) {
+            if (sh.getHash(i, i + m) == needleHash) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // ---------- Hash computation for needle ----------
+    private long computeNeedleHash(String s) {
+        long h1 = 0, h2 = 0;
+        long MOD1 = 1_000_000_007L;
+        long MOD2 = 1_000_000_009L;
+        long BASE1 = 31;
+        long BASE2 = 37;
+
+        for (char c : s.toCharArray()) {
+            long val = c - 'a' + 1;
+            h1 = (h1 * BASE1 + val) % MOD1;
+            h2 = (h2 * BASE2 + val) % MOD2;
+        }
+        return (h1 << 32) | h2;
+    }
+
+    public static void main(String[] args) {
+        FindtheIndexoftheFirstOccurrenceinaString sol = new FindtheIndexoftheFirstOccurrenceinaString();
+        String haystack = "sadbutsad", needle = "sad";
+
+        System.out.println(sol.strStr(haystack, needle));
     }
 }
-
-// ── Arbitrary substring equality check ───────────────────────────────────────
-RollingHash rh = new RollingHash(vals, n);
-boolean equal = rh.hash(l1, r1) == rh.hash(l2, r2);  // true with high probability
-
-// ── Sliding window (fixed length L, sequential scan) ─────────────────────────
-long windowHash = rh.hash(0, L - 1);
-for (int i = 1; i + L - 1 < n; i++) {
-    // drop s[i-1], shift, append s[i+L-1]
-    windowHash = (windowHash - vals[i-1] * rh.pow[L-1] % MOD + MOD) % MOD;
-    windowHash = (windowHash * BASE + vals[i + L - 1]) % MOD;
-    // windowHash now equals rh.hash(i, i + L - 1)
-}
-
-// ── Double hashing (collision-safe for contests) ─────────────────────────────
-// Instantiate two RollingHash objects with different BASE/MOD.
-// Store combined key: h1 * MOD2 + h2  as a single long in your HashSet.
 ```
 
 ---
