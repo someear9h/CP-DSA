@@ -1,3 +1,5 @@
+package sorting;
+
 import java.util.*;
 
 public class Sorting2DArrayByLastElement {

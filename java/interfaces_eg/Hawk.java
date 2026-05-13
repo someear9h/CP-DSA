@@ -1,0 +1,8 @@
+package interfaces_eg;
+
+public class Hawk implements Predator {
+    @Override
+    public void hunt() {
+        System.out.println("Hawk is Hunting");
+    }
+}
