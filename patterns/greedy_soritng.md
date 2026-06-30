@@ -3,6 +3,8 @@
 Every problem in this pattern follows this exact flow:
 
 found it on: https://codeforces.com/problemset/problem/1729/D
+found new ones: 
+1. https://codeforces.com/problemset/problem/2237/B
 
 ```
 STEP 1: Reduce to a per-element value
