@@ -1,222 +1,188 @@
 package java_interview.machine_coding_interview_problems.ParkingLotSystem;
 
-/**
- * 
- * Problem Statement:
-
-Features:
-
-The parking lot has multiple Floors.
-Each floor has multiple Slots.
-There are three types of vehicles: TRUCK, CAR, and BIKE.
-Slots are specific to vehicle types (e.g., a Car cannot park in a Bike slot).
-When a vehicle enters, it must be assigned the lowest available floor and the lowest available slot on that floor.
-A Ticket is generated upon entry.
-When a vehicle leaves, the slot becomes free again.
-
-Requirements:
-
-Initialize the Parking Lot with N floors and M slots per floor.
-(Assume Slot 1 is for Trucks, Slots 2-3 for Bikes, and Slots 4-M for Cars).
-parkVehicle(VehicleType, RegistrationNumber, Color) -> Returns a Ticket ID or "Lot Full".
-unparkVehicle(TicketId) -> Frees the slot.
-displayFreeCount(VehicleType) -> Shows how many slots are free per floor.
- */
-
 import java.util.*;
 
-// --- ENUMS ---
 enum VehicleType {
-    TRUCK, BIKE, CAR
+    CAR, BIKE, TRUCK
 }
 
-// --- ENTITIES ---
-
-// Using standard classes (though Java Records are great here too)
 class Vehicle {
     String regNo;
-    String color;
     VehicleType type;
+    String color;
 
     public Vehicle(String regNo, String color, VehicleType type) {
         this.regNo = regNo;
-        this.color = color;
         this.type = type;
+        this.color = color;
     }
 }
 
-// Slot MUST implement Comparable so the TreeSet knows how to sort them!
 class Slot implements Comparable<Slot> {
-    int floorNo;
     int slotNo;
-    VehicleType allowedType;
-    Vehicle vehicle; // null means the slot is free
+    boolean isTaken;
+    VehicleType type;
 
-    public Slot(int floorNo, int slotNo, VehicleType allowedType) {
-        this.floorNo = floorNo;
+    public Slot(int slotNo, VehicleType type) {
         this.slotNo = slotNo;
-        this.allowedType = allowedType;
-        this.vehicle = null;
+        this.isTaken = false;
+        this.type = type;
     }
 
     @Override
     public int compareTo(Slot other) {
-        // Sorts slots in ascending order (Slot 1, then Slot 2, etc.)
         return Integer.compare(this.slotNo, other.slotNo);
     }
 }
 
-// --- THE SERVICE ---
-class ParkingLotService {
-    // Database 1: The physical representation -> Map<FloorNo, Map<SlotNo, Slot>>
-    private Map<Integer, Map<Integer, Slot>> physicalLot;
+class Ticket {
+    String id;
+    int floorNo;
+    int slotNo;
+    Vehicle vehicle;
 
-    // Database 2: The Fast-Access Tracker -> Map<FloorNo, Map<VehicleType, TreeSet<Slot>>>
-    private Map<Integer, Map<VehicleType, TreeSet<Slot>>> freeSlotsTracker;
-
-    private int numFloors;
-    private int slotsPerFloor;
-
-    public ParkingLotService(int numFloors, int slotsPerFloor) {
-        this.numFloors = numFloors;
-        this.slotsPerFloor = slotsPerFloor;
-        this.physicalLot = new HashMap<>();
-        this.freeSlotsTracker = new HashMap<>();
-
-        // Initialize the Parking Lot
-        for (int i = 1; i <= numFloors; i++) {
-            physicalLot.put(i, new HashMap<>());
-            
-            freeSlotsTracker.put(i, new HashMap<>());
-            freeSlotsTracker.get(i).put(VehicleType.TRUCK, new TreeSet<>());
-            freeSlotsTracker.get(i).put(VehicleType.BIKE, new TreeSet<>());
-            freeSlotsTracker.get(i).put(VehicleType.CAR, new TreeSet<>());
-
-            for (int j = 1; j <= slotsPerFloor; j++) {
-                // Rule: Slot 1 is Truck, 2-3 are Bikes, 4-M are Cars
-                VehicleType type;
-                if (j == 1) {
-                    type = VehicleType.TRUCK;
-                } else if (j == 2 || j == 3) {
-                    type = VehicleType.BIKE;
-                } else {
-                    type = VehicleType.CAR;
-                }
-
-                Slot slot = new Slot(i, j, type);
-                
-                // Add to physical lot
-                physicalLot.get(i).put(j, slot);
-                // Add to tracker
-                freeSlotsTracker.get(i).get(type).add(slot);
-            }
-        }
-        System.out.println("Created parking lot with " + numFloors + " floors and " + slotsPerFloor + " slots per floor");
-    }
-
-    // Requirement: parkVehicle
-    public String parkVehicle(VehicleType type, String regNo, String color) {
-        // Find the lowest available floor
-        for (int i = 1; i <= numFloors; i++) {
-            TreeSet<Slot> availableSlots = freeSlotsTracker.get(i).get(type);
-
-            if (!availableSlots.isEmpty()) {
-                // Get the lowest available slot on this floor in O(1) time
-                Slot slotToPark = availableSlots.first();
-                
-                // 1. Remove it from the free tracker (O(log N))
-                availableSlots.remove(slotToPark);
-                
-                // 2. Park the vehicle in the physical slot
-                slotToPark.vehicle = new Vehicle(regNo, color, type);
-                
-                // 3. Generate and return Ticket ID
-                String ticketId = "PRK-" + slotToPark.floorNo + "-" + slotToPark.slotNo;
-                System.out.println("Parked vehicle. Ticket ID: " + ticketId);
-                return ticketId;
-            }
-        }
-        System.out.println("Lot Full");
-        return "Lot Full";
-    }
-
-    // Requirement: unparkVehicle
-    public void unparkVehicle(String ticketId) {
-        // Parse the ticket ID (Format: PRK-floorNo-slotNo)
-        String[] parts = ticketId.split("-");
-        if (parts.length != 3) {
-            System.out.println("Invalid Ticket ID");
-            return;
-        }
-
-        int floorNo = Integer.parseInt(parts[1]);
-        int slotNo = Integer.parseInt(parts[2]);
-
-        // Validation
-        if (!physicalLot.containsKey(floorNo) || !physicalLot.get(floorNo).containsKey(slotNo)) {
-            System.out.println("Invalid Floor or Slot number.");
-            return;
-        }
-
-        Slot slot = physicalLot.get(floorNo).get(slotNo);
-
-        if (slot.vehicle == null) {
-            System.out.println("Slot is already free. Nothing is parked here.");
-            return;
-        }
-
-        // 1. Save vehicle type so we know which tracker to update
-        VehicleType type = slot.allowedType;
-
-        // 2. Clear the vehicle out of the physical slot
-        slot.vehicle = null;
-
-        // 3. Put the slot back into the free tracker so the guard knows it's open
-        freeSlotsTracker.get(floorNo).get(type).add(slot);
-
-        System.out.println("Unparked vehicle from Floor " + floorNo + ", Slot " + slotNo);
-    }
-
-    // Requirement: displayFreeCount
-    public void displayFreeCount(VehicleType type) {
-        for (int i = 1; i <= numFloors; i++) {
-            int freeCount = freeSlotsTracker.get(i).get(type).size();
-            System.out.println("No. of free slots for " + type + " on Floor " + i + ": " + freeCount);
-        }
+    public Ticket(int floorNo, int slotNo, Vehicle veh) {
+        this.id = UUID.randomUUID().toString();
+        this.floorNo = floorNo;
+        this.slotNo = slotNo;
+        this.vehicle = veh;
     }
 }
 
-// --- MAIN EXECUTION ---
+class Floor {
+    int floorNo;
+    private final Map<VehicleType, TreeSet<Slot>> freeSlotsByType = 
+    new EnumMap<>(VehicleType.class);
+
+    private final Map<Integer, Slot> allSlots = new HashMap<>();
+
+    // fill the data structures for this floor
+    public Floor(int floorNo, int numSlots) {
+        this.floorNo = floorNo;
+        
+        for(int i = 1; i <= numSlots; i++) {
+            VehicleType type;
+            if(i == 1) {
+                type = VehicleType.TRUCK;
+            }
+            else if(i == 2 || i == 3) {
+                type = VehicleType.BIKE;
+            }
+            else {
+                type = VehicleType.CAR;
+            }
+
+            Slot slot = new Slot(i, type);
+            freeSlotsByType.computeIfAbsent(type, t -> new TreeSet<>()).add(slot);
+            allSlots.put(i, slot);
+        }
+    }
+
+    public Optional<Slot> allocateSlot(VehicleType type) {
+        TreeSet<Slot> freeSlots = freeSlotsByType.get(type);
+        if(freeSlots == null || freeSlots.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Slot allocatedSlot = freeSlots.pollFirst();
+        allocatedSlot.isTaken = true;
+        return Optional.of(allocatedSlot);
+    }
+
+    public void releaseSlot(int slotNo) {
+        Slot slot = allSlots.get(slotNo);
+        slot.isTaken = false;
+        freeSlotsByType.get(slot.type).add(slot);
+    } 
+
+    public int getFreeCount(VehicleType type) {
+        TreeSet<Slot> free = freeSlotsByType.get(type);
+        return free == null ? 0 : free.size();
+    }
+}
+
+class ParkingLotService {
+    private final List<Floor> floors = new ArrayList<>();
+    private final Map<String, Ticket> activeTickets = new HashMap<>();
+
+    public ParkingLotService(int numFloors, int numSlots) {
+        for(int i = 1; i <= numFloors; i++) {
+            floors.add(new Floor(i, numSlots));
+        }
+    }
+
+    public Optional<Ticket> parkVehicle(Vehicle vehicle) {
+        VehicleType type = vehicle.type;
+        for(Floor floor : floors) {
+            Optional<Slot> slot = floor.allocateSlot(type);
+            if(slot.isPresent()) {
+                Ticket ticket = new Ticket(floor.floorNo, slot.get().slotNo, vehicle);
+                activeTickets.put(ticket.id, ticket);
+                return Optional.of(ticket);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public boolean unparkVehicle(String ticketId) {
+        Ticket ticket = activeTickets.get(ticketId);
+        activeTickets.remove(ticketId);
+
+        if(ticket == null) {
+            return false;
+        }
+
+        int slotNo = ticket.slotNo;
+        int floorNo = ticket.floorNo;
+        Floor floor = floors.get(floorNo - 1);
+        floor.releaseSlot(slotNo);
+        return true;
+    }
+    
+    public Map<Integer, Integer> getFreeCountPerFloor(VehicleType type) {
+        Map<Integer, Integer> result = new LinkedHashMap<>(); // preserves floor order for display
+        for (Floor floor : floors) {
+            result.put(floor.floorNo, floor.getFreeCount(type));
+        }
+        return result;
+    }
+}
+
 public class Main {
     public static void main(String[] args) {
-        // Initialize 2 floors, 5 slots per floor
-        ParkingLotService lot = new ParkingLotService(2, 5);
-        System.out.println("-------------------------------------------------");
+        ParkingLotService service = new ParkingLotService(5, 5);
 
-        // Park some cars
-        String ticket1 = lot.parkVehicle(VehicleType.CAR, "MH-12-1234", "White");
-        String ticket2 = lot.parkVehicle(VehicleType.CAR, "MH-12-9999", "Black");
-        
-        // Park a bike
-        String ticket3 = lot.parkVehicle(VehicleType.BIKE, "MH-14-5555", "Red");
+        printFreeCount(service, VehicleType.CAR);
 
-        System.out.println("-------------------------------------------------");
-        
-        // Display free counts
-        lot.displayFreeCount(VehicleType.CAR);
-        lot.displayFreeCount(VehicleType.BIKE);
+        Optional<Ticket> ticket1 = service.parkVehicle(new Vehicle("KA01AB1234", "navyblue", VehicleType.CAR));
+        ticket1.ifPresentOrElse(
+            t -> System.out.println("Parked. Ticket: " + t.id),
+            () -> System.out.println("Parking full!")
+        );
+        printFreeCount(service, VehicleType.CAR);
 
-        System.out.println("-------------------------------------------------");
-        
-        // Unpark a car
-        lot.unparkVehicle(ticket1);
-        
-        System.out.println("-------------------------------------------------");
-        
-        // Display free counts again to verify it was freed
-        lot.displayFreeCount(VehicleType.CAR);
-        
-        // A new car arrives, it should take the lowest slot (the one we just freed!)
-        lot.parkVehicle(VehicleType.CAR, "MH-01-7777", "Blue");
+        Optional<Ticket> ticket2 = service.parkVehicle(new Vehicle("KA01CD5678", "red", VehicleType.CAR));
+        ticket2.ifPresentOrElse(
+            t -> System.out.println("Parked. Ticket: " + t.id),
+            () -> System.out.println("Parking full!")
+        );
+        printFreeCount(service, VehicleType.CAR);
+
+        // Unpark using ticket1 -- safe even if ticket1 were empty, since we check isPresent
+        ticket1.ifPresent(t -> {
+            boolean released = service.unparkVehicle(t.id);
+            System.out.println("Unparked ticket1: " + released);
+        });
+        printFreeCount(service, VehicleType.CAR);
+
+        // Demonstrate the fixed bug from v1: unparking a garbage ticket no longer crashes
+        boolean releasedGarbage = service.unparkVehicle("not-a-real-ticket");
+        System.out.println("Unparked garbage ticket (should be false): " + releasedGarbage);
+    }
+
+    private static void printFreeCount(ParkingLotService service, VehicleType type) {
+        System.out.println("Free slots for " + type + ":");
+        service.getFreeCountPerFloor(type).forEach((floorNo, count) ->
+            System.out.printf("  Floor %d: %d%n", floorNo, count));
     }
 }
