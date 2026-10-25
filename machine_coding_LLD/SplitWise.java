@@ -120,6 +120,10 @@ class PercentageSplitStrategy implements SplitStrategy {
 }
 
 /**------------------- Service and In-memory DB ------------------------------- */
+
+// this class is a GOD class, it violates SRP (single responsibility principle)
+// but due to time issues we make this class, if spare time is available
+// make seperate Service classes
 class SplitwiseService {
     Map<String, User> userDb = new HashMap<>();
     Map<String, Group> groupDb = new HashMap<>();
