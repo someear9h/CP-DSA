@@ -32,7 +32,7 @@ public class Game {
         }
 
         // use .equals() instead of ==
-        if(player.equals(currentPlayer)) {
+        if(!player.equals(currentPlayer)) {
             return false;
         }
 
